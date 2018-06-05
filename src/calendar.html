@@ -1,6 +1,31 @@
 <template>
   <section class="au-animate">
     <h2>${heading}</h2>
-    
+    <button click.delegate="addEvent()">Add Event</button>
+    <table>
+      <thead>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td repeat.for="i of [1,2,3,4,5,6,7]">${i}</td>
+        </tr>
+        <tr>
+          <td repeat.for="i of [8,9,10,11,12,13,14]">${i}</td>
+        </tr>
+        <tr>
+          <td repeat.for="i of [15,16,17,18,19,20,21]">${i}</td>
+        </tr>
+        <tr>
+          <td repeat.for="i of [22,23,24,25,26,27,28]">${i}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
