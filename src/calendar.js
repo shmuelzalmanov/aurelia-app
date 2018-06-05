@@ -1,3 +1,5 @@
 export class Calendar {
-  heading = 'Calendar App';  
+  constructor() {
+    this.heading = 'Calendar App';
+  }
 }
