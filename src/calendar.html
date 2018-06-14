@@ -1,8 +1,11 @@
 <template>
+    <require from="./filter-array"></require>
+    <require from="./sort-array"></require>
+
+
   <section class="au-animate">
     <h2>${heading}</h2>
     <button click.delegate="addEvent()">Add Event</button>
-    <button click.delegate="editEvent()">Edit Event</button>
 
     <table>
       <thead>
@@ -18,37 +21,42 @@
         <tr>
           <td repeat.for="i of [1,2,3,4,5,6,7]">
             ${i}
-            <select>
-              <option repeat.for="event of events">${event.startTime} ${event.eventName}</option>
-            </select>
+            <select change.delegate="editEvent()">
+              <option value="-1"></option>
+              <option repeat.for="event of events | filter: ['eventDate']: i | sort: 'startTime':'ascending'" value="event.eventId">${event.startTime} ${event.eventName}</option>
+              </select>
           </td>
         </tr>
         <tr>
           <td repeat.for="i of [8,9,10,11,12,13,14]">${i}
-            <select>
-              <option repeat.for="event of events">${event.startTime} ${event.eventName}</option>
+            <select change.delegate="editEvent()">
+              <option value="-1"></option> 
+              <option repeat.for="event of events | filter: ['eventDate']: i | sort: 'startTime':'ascending'" value="event.eventId">${event.startTime} ${event.eventName}</option>
             </select>
           </td>
           
         </tr>
         <tr>
           <td repeat.for="i of [15,16,17,18,19,20,21]">${i}
-            <select>
-              <option repeat.for="event of events">${event.startTime} ${event.eventName}</option>
+            <select change.delegate="editEvent()">
+              <option value="-1"></option>
+              <option repeat.for="event of events | filter: ['eventDate']: i | sort: 'startTime':'ascending'" value="${event.eventId}">${event.startTime} ${event.eventName}</option>
             </select>
           </td>
         </tr>
         <tr>
           <td repeat.for="i of [22,23,24,25,26,27,28]">${i}
-            <select>
-              <option repeat.for="event of events">${event.startTime} ${event.eventName}</option>
+            <select change.delegate="editEvent()">
+              <option value="-1"></option>
+              <option repeat.for="event of events | filter: ['eventDate']: i | sort: 'startTime':'ascending'" value="${event.eventId}">${event.startTime} ${event.eventName}</option>
             </select>
           </td>
         </tr>
       </tbody>
     </table>
   </section>
-  <section id="eventArea">
+
+  <section id="eventArea" style.bind="inputStyle">
     <div class="flex-container flex-wrap flex-center">
       <div class="flex-item-xlg justify-items-center">
         <h2 innerhtml.bind="formHead">Add New Event</h2>
@@ -70,6 +78,7 @@
       <div class="flex-item-md">
         <label for="startDate">Date</label>
         <select id="startDate" value.bind="event['eventDate']">
+          <option></option>
           <option repeat.for="i of 28">${i+1}</option>
         </select>
       </div>
@@ -78,9 +87,14 @@
         <textarea id="eventDesc" rows="6" value.bind="event['eventDesc']"></textarea>
       </div>
       <div class="flex-item-xlg justify-space-between">
-        <button type="button">Back</button>
-        <button type="button" click.delegate="saveEvent()">Save</button>
+        <button type="button" click.delegate="closeEvent()">Back</button>
+        <div>
+          <button type="button" style.bind="inputStyle" click.delegate="deleteEvent()">Delete</button>
+          <button type="button" click.delegate="saveEvent()">Save</button>
+        </div>
+        <input type="text" value.bind="event['eventId']">
       </div>
     </div>
   </section>
+
 </template>

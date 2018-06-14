@@ -1,44 +1,15 @@
-/**
- * Sort value converter
- *
- * This value converter takes an array with a config parameter and sorts the array and
- * returns it to the view.
- */
-export class SortValueConverter {
-    /**
-     * To View method
-     *
-     * @param {array} array to sort
-     * @param {Object} config sort configuration
-     *
-     * @return {array} sorted array
-     * @example
-     * "item of $parent.results.facets[facet.name] | sort: { property: 'doc_count', direction: 'desc', numeric: true }"
-     *
-     */
-    toView(array, config) {
-      return array
-        .sort((val1, val2) => {
-            let a = val1;
-            let b = val2;
-    
-            if (config.direction.toLowerCase() !== 'asc' && config.direction.toLowerCase() !== 'ascending') {
-              a = val2;
-              b = val1;
-            }
-            
-            if (config.numeric)
-              return a[config.property] - b[config.property];
-            else
-              return a[config.property] > b[config.property];
-        });
-    }
-}
 
-/**
- * Usage
- *
- * <require from="sort-array"></require>
- *
- * <template repeat.for="item in array | sort: { property: '<sortable property of item>', direction: '<desc(default)|asc>', numeric: <boolean>"
- */
+export class SortValueConverter {
+  toView(array, property, direction) {
+    if (!array)
+      return array;
+    let pname = property;
+    let factor = direction.match(/^desc*/i) ? 1 : -1;
+    var retvalue = array.sort((a, b) => {
+      var textA = a.toUpperCase ? a[property].toUpperCase() : a[property];
+      var textB = b.toUpperCase ? b[property].toUpperCase() : b[property];
+      return (textA < textB) ? factor : (textA > textB) ? -factor : 0;
+    });
+    return retvalue;
+  }
+}
