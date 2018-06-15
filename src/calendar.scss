@@ -1,6 +1,20 @@
+*{box-sizing: content-box;}
+
 section{
     td, th{border:1px solid;padding:10px;text-align: center}
     .addEvent{
 
     }
+    
 }
+#eventArea{width:60%; visibility: hidden;}
+#eventDesc{width:100%;}
+.flex-container{display: flex;}
+.flex-wrap{flex-wrap: wrap;}
+.flex-center{justify-content:center; align-items: center;}
+.flex-item-sm{flex-basis: 25%;}
+.flex-item-md{flex-basis:50%;}
+.flex-item-lg{flex-basis:75%;}
+.flex-item-xlg{flex-basis:100%;}
+.justify-items-center{display: flex; justify-content: center;}
+.justify-space-between{display: flex; justify-content: space-between;}
