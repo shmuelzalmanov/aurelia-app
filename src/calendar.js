@@ -22,12 +22,28 @@ export class Calendar {
         eventId: 1},
       {
         eventName: 'Meeting 3',
-        eventLocation: '44th',
+        eventLocation: '47th',
         startTime: '12:00',
         endTime: '14:00',
         eventDate: 23,
         eventDesc: '',
-        eventId: 2}
+        eventId: 2},
+        {
+        eventName: 'Meeting 4',
+        eventLocation: '46th',
+        startTime: '12:00',
+        endTime: '14:00',
+        eventDate: 8,
+        eventDesc: '',
+        eventId: 3},
+    {
+        eventName: 'Meeting 5',
+        eventLocation: '45th',
+        startTime: '12:00',
+        endTime: '14:00',
+        eventDate: 1,
+        eventDesc: '',
+        eventId: 4}
     ];
     this.event = {  /* Used for current active event */
       eventName: 'test',
@@ -37,39 +53,32 @@ export class Calendar {
       eventDate: 1,
       eventDesc: '',
       eventId: -1};
-    this.formHead = ""; /* Used to label current action */
-    this.updateMode;
 
-    this.events = this.sortEvents();
-    this.inputStyle;
+    this.formHead = ""; /* Used to label current action */
+    this.inputStyle; /* style for input area, used for hidden/visible */ 
     this.idCount = this.events.length-1;
 
   }
 
   addEvent() { 
+    this.clearFormFields();
     this.formHead = "Add New Event";
     this.openEvent();
-    this.updateMode = "add";
-    this.events = this.sortEvents();
-
+    this.idCount++;
+    this.event.eventId = this.idCount; // Prime new ID for addition
   }
 
   saveEvent(){  
-
-    if(!this.validateInputs()){return;}
+    if(!this.validateInputs()){return;}// Validate for minimum required inputs for an event.
 
     this.event.eventDate = Number(this.event.eventDate);
-    if(this.updateMode === "add"){
-      this.idCount++;
-      this.event.eventId = this.idCount;
-
-    }else{
-      this.deleteEvent();
+    if(this.formHead === "View/Edit Event"){
+      this.deleteEvent(); // Clear out stored event so the changes can be re-added
     }
-    let copy = Object.assign({}, this.event); // Fix for a property reference error
-    console.log(this.idCount);
+
+    let copy = Object.assign({}, this.event); // Fix for a bind reference error
     this.events.push(copy);
-    this.clearFormFields();
+
     this.closeEvent();
 
     
@@ -84,39 +93,34 @@ export class Calendar {
     return true;
   }
 
-
-
-
   deleteEvent() {
     let index = this.findIdIndex(this.event.eventId);
     
     if (index !== -1) {
-        this.events.splice(index, 1);
+      this.events.splice(index, 1);
     }
-
-    // let copyAry = [];
-    // while(this.events.length > 0){
-    //   copyAry.push(this.events.pop());
-    // }
-    // this.events = copyAry.splice(0);
-    // this.closeEvent();
+    this.closeEvent();
   }
 
   editEvent(){
+    if(event.target.value == -1){
+      this.addEvent()
+      return;
+    }
+    this.event = Object.assign({},this.events[this.findIdIndex(event.target.value)]); 
+    // Unsure how to bind values where many elements do the same task.
+    // event.target would be the first thing to go in a Dialog/modal approach
+
     this.formHead = "View/Edit Event";
     this.openEvent();
-    this.updateMode = "edit";
-    this.event = Object.assign({},this.events[event.target.value]); // Unsure how to bind values where many elements do the same task.
-                                                  // this would be the first thing to go in a Dialog/modal approach
+                                      
   }
   
   findIdIndex(id){
-    console.log(id);
     for(let i = 0; i < this.events.length; i++){
-      if(this.events.eventIdd === id)
-      console.log(i);
+      if(this.events[i].eventId == id){
         return i;
-        
+    }
     }
     return -1;
   }
@@ -128,7 +132,7 @@ export class Calendar {
     }
   }
 
-  sortEvents(){
+  sortEvents(){// Was used before I figured out the value converters. Still might be useful at some point.
     return this.events.sort((a,b) => {
       if(a.eventDate === b.eventDate){
         return a.startTime > b.startTime; //Sort by time
@@ -137,6 +141,6 @@ export class Calendar {
     });
   }
 
-  closeEvent(){this.inputStyle = "visibility:hidden";}
+  closeEvent(){this.inputStyle = "visibility: hidden";}
   openEvent(){this.inputStyle = "visibility: visible;"}
 }
